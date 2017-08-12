@@ -35,10 +35,9 @@ func (shell *Shell) AddCommand(cmd *Command) {
 func (shell *Shell) Start() error {
 
 	config := &readline.Config{
-		Prompt:            shell.Prompt,
-		AutoComplete:      setupAutoCompleter(shell),
-		InterruptPrompt:   "^C",
-		HistorySearchFold: true,
+		Prompt:          shell.Prompt,
+		AutoComplete:    setupAutoCompleter(shell),
+		InterruptPrompt: "^C",
 	}
 	rl, err := readline.NewEx(config)
 
