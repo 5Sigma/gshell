@@ -6,17 +6,19 @@ import (
 	"strings"
 )
 
-type (
-	Shell struct {
-		Commands []*Command
-		Prompt   string
-	}
-)
+type Shell struct {
+	Commands     []*Command
+	Prompt       string
+	VimMode      bool
+	HistoryLimit int
+}
 
 func New() *Shell {
 	sh := &Shell{
-		Prompt:   "> ",
-		Commands: []*Command{},
+		Prompt:       "> ",
+		Commands:     []*Command{},
+		HistoryLimit: 500,
+		VimMode:      false,
 	}
 	sh.AddCommand(&Command{
 		Name:        "help",
