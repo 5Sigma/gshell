@@ -3,6 +3,7 @@ package gshell
 import (
 	"fmt"
 	"github.com/chzyer/readline"
+	"sort"
 	"strings"
 )
 
@@ -12,6 +13,12 @@ type Shell struct {
 	VimMode      bool
 	HistoryLimit int
 }
+
+type ByName []*Command
+
+func (a ByName) Len() int           { return len(a) }
+func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
 func New() *Shell {
 	sh := &Shell{
@@ -77,11 +84,13 @@ func (shell *Shell) ProcessLine(line string) {
 	for _, cmd := range shell.Commands {
 		if strings.ToLower(cmd.Name) == strings.ToLower(command) {
 			cmd.Call(shell, args)
+			break
 		}
 	}
 }
 
 func (sh *Shell) ShowHelp() {
+	sort.Sort(ByName(sh.Commands))
 	for _, cmd := range sh.Commands {
 		fmt.Printf("%s - %s\n", cmd.Name, cmd.Description)
 	}
